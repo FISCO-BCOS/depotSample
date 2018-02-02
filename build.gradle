@@ -1,0 +1,117 @@
+apply plugin: 'maven'
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+version = '1.0'
+
+tasks.withType(JavaCompile) {  
+    options.encoding = "UTF-8"  
+}
+
+def defaultEncoding = 'utf-8'
+[compileJava]*.options*.encoding = defaultEncoding
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'DEPOT',
+                   'Implementation-Version': version
+    }
+}
+
+repositories {
+	maven {
+        url "http://maven.aliyun.com/nexus/content/groups/public/"
+    }
+	mavenLocal()
+	mavenCentral()
+}
+
+sourceSets {
+	main {
+		java {
+			srcDir 'src/main/java'
+		}
+
+		resources {
+			srcDir 'src/main/resources'
+		}
+	}
+}
+
+def spring_version="4.1.8.RELEASE"
+List spring =[
+		"org.springframework:spring-core:$spring_version",
+		"org.springframework:spring-beans:$spring_version",
+		"org.springframework:spring-context:$spring_version",
+		"org.springframework:spring-tx:$spring_version",
+		"org.springframework:spring-jdbc:$spring_version",
+		"org.springframework:spring-test:$spring_version"
+]
+
+def log4j_version="2.9.0"
+List logger = [
+        "org.apache.logging.log4j:log4j-api:$log4j_version",
+        "org.apache.logging.log4j:log4j-core:$log4j_version",
+        "org.apache.logging.log4j:log4j-slf4j-impl:$log4j_version",
+        "org.apache.logging.log4j:log4j-web:$log4j_version",
+        "org.slf4j:jcl-over-slf4j:1.7.12"
+]
+
+dependencies {
+	compile spring,logger
+	
+	compile 'org.mybatis:mybatis:3.2.8'
+    compile 'org.mybatis:mybatis-spring:1.2.2'
+	compile "com.fasterxml.jackson.core:jackson-databind:2.8.11"
+	runtime "com.fasterxml.jackson.core:jackson-databind:2.8.11"
+	compile 'io.netty:netty-all:4.1.4.Final'
+	runtime 'io.netty:netty-all:4.1.4.Final'
+	compile 'io.netty:netty-tcnative:2.0.0.Final'
+	runtime 'io.netty:netty-tcnative:2.0.0.Final'
+	compile 'com.google.guava:guava:19.0'
+	runtime 'com.google.guava:guava:19.0'
+	compile 'mysql:mysql-connector-java:5.1.30'
+	compile 'com.alibaba:fastjson:1.2.29'
+	compile 'com.lmax:disruptor:3.3.7'
+
+	// web3j依赖
+	compile files('libs/web3sdk.jar')
+	runtime files('libs/web3sdk.jar')
+	compile 'org.apache.httpcomponents:httpclient:4.5.2',
+			'org.bouncycastle:bcprov-jdk15on:1.54',
+			'com.lambdaworks:scrypt:1.4.0',
+			'com.squareup:javapoet:1.7.0',
+			'io.reactivex:rxjava:1.2.4',
+			'com.github.jnr:jnr-unixsocket:0.15'
+}
+
+jar {
+	destinationDir file('depot/apps')
+	archiveName project.name + '.jar'
+	exclude '**/*.xml'
+    exclude '**/*.properties'
+    exclude '**/*.sol'
+    exclude '**/*.html'
+    exclude '**/*.sql'
+    exclude '**/*.pem'
+	
+    doLast {
+    	copy {
+			from file('src/main/resources/')
+			into 'depot/conf'
+		}
+		copy {
+			from configurations.runtime
+			into 'depot/lib'
+		}
+		copy {
+			from file('script/')
+			into 'depot'
+		}
+		copy {
+			from file('.').listFiles().findAll{File f -> (f.name.endsWith('.bat') || f.name.endsWith('.sh') || f.name.endsWith('.env'))}
+			into 'depot'
+		}
+	}
+}
