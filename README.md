@@ -327,3 +327,6 @@
 1. 导出的等幂。
 2. 按策略多活加速导出。
 3. depot数据和区块链对账保证导出数据和链上的一致性。
+
+###  九、[FISCO-BCOS中client.keystore 的生成方法](https://github.com/FISCO-BCOS/web3sdk/issues/20)
+###  十、[web3sdk的使用方式](https://github.com/FISCO-BCOS/web3sdk)
