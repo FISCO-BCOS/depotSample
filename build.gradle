@@ -1,30 +1,21 @@
 apply plugin: 'maven'
 apply plugin: 'java'
+apply plugin: 'eclipse'
 
+//指定JDK版本,改成系统中版本
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-version = '1.0'
 
-tasks.withType(JavaCompile) {  
-    options.encoding = "UTF-8"  
-}
+[compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
-def defaultEncoding = 'utf-8'
-[compileJava]*.options*.encoding = defaultEncoding
-
-jar {
-    manifest {
-        attributes 'Implementation-Title': 'DEPOT',
-                   'Implementation-Version': version
-    }
-}
-
+// In this section you declare where to find the dependencies of your project
 repositories {
-	maven {
+    maven {       
         url "http://maven.aliyun.com/nexus/content/groups/public/"
     }
-	mavenLocal()
-	mavenCentral()
+
+    mavenLocal()
+    mavenCentral()
 }
 
 sourceSets {
@@ -60,15 +51,16 @@ List logger = [
 
 dependencies {
 	compile spring,logger
+	runtime spring,logger
 	
 	compile 'org.mybatis:mybatis:3.2.8'
     compile 'org.mybatis:mybatis-spring:1.2.2'
-	compile "com.fasterxml.jackson.core:jackson-databind:2.8.11"
-	runtime "com.fasterxml.jackson.core:jackson-databind:2.8.11"
-	compile 'io.netty:netty-all:4.1.4.Final'
-	runtime 'io.netty:netty-all:4.1.4.Final'
-	compile 'io.netty:netty-tcnative:2.0.0.Final'
-	runtime 'io.netty:netty-tcnative:2.0.0.Final'
+    compile "com.fasterxml.jackson.core:jackson-databind:2.8.8.1"
+    runtime "com.fasterxml.jackson.core:jackson-databind:2.8.8.1"
+    compile 'io.netty:netty-all:4.1.15.Final'
+    runtime 'io.netty:netty-all:4.1.15.Final'
+    compile 'io.netty:netty-tcnative:2.0.0.Final'
+    runtime 'io.netty:netty-tcnative:2.0.0.Final'
 	compile 'com.google.guava:guava:19.0'
 	runtime 'com.google.guava:guava:19.0'
 	compile 'mysql:mysql-connector-java:5.1.30'
