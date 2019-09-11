@@ -1,0 +1,7 @@
+#!/bin/sh
+
+#blockheight表为默认表，不可删除
+source blockheight.sql;
+
+#业务数据表部分，根据实际业务进行修改
+source t_evidence_info.sql;
