@@ -70,7 +70,6 @@
 5. 在DepotSample工程的/depot/src/main/resources/db.properties文件配置数据库信息。
 
     ```
-    例子：
     db.ip=127.0.0.1
     db.port=3306
     db.user=root
