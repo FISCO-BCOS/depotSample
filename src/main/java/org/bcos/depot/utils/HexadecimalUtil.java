@@ -54,7 +54,7 @@ public class HexadecimalUtil {
         }
         return -1;
     }
-    public static String HexToString(String hex){
+    public static String hexToString(String hex){
 
         StringBuilder finalString = new StringBuilder();
         StringBuilder tempString = new StringBuilder();

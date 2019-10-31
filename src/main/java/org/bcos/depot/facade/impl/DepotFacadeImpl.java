@@ -9,7 +9,7 @@ import org.bcos.depot.contract.Evidence.NewSignaturesEventEventResponse;
 import org.bcos.depot.entity.EvidenceInfo;
 import org.bcos.depot.facade.DepotFacade;
 import org.bcos.depot.mapper.EvidenceInfoDao;
-import org.bcos.depot.utils.Tools;
+import org.bcos.depot.utils.SignatureDataUtils;
 import org.bcos.web3j.crypto.Credentials;
 import org.bcos.web3j.crypto.ECKeyPair;
 import org.bcos.web3j.crypto.Keys;
@@ -40,7 +40,7 @@ public class DepotFacadeImpl implements DepotFacade {
 				evidenceInfo.setEvidenceId(newSignatures.id.getValue());
 				evidenceInfo.setEvidenceHash(newSignatures.evi.getValue());
 				SignatureData signatureData = new SignatureData((byte) newSignatures.v.getValue().intValue(), newSignatures.r.getValue(), newSignatures.s.getValue());
-				String signData = Tools.signatureDataToString(signatureData);
+				String signData = SignatureDataUtils.signatureDataToString(signatureData);
 				evidenceInfo.setSignData(signData);
 				evidenceInfo.setFactoryAddress(newSignatures.addr.toString());
 				evidenceInfoDao.insert(evidenceInfo);
