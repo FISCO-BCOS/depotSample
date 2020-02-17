@@ -49,7 +49,7 @@
 4. 在DepotSample工程的/depotSample/src/main/resources/applicationContext.xml文件配置区块链节点信息。
 
     ```
-    <bean id="channelService" class="cn.webank.channel.client.Service">
+    <bean id="channelService" class="org.bcos.channel.client.Service">
     		<property name="orgID" value="user" /><!-- 配置角色名称 -->
     		<property name="allChannelConnections">
     			<map>
